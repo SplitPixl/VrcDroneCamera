@@ -15,6 +15,7 @@
 
 <script>
   let ws
+  let deadzone = 0.1
 
   function connect() {
     document.querySelector('#status').innerText = 'Connecting...'
@@ -23,7 +24,6 @@
     ws.addEventListener('open', () => {
       document.querySelector('#status').innerText = 'Connected!'
       ws.send(new Uint8Array([0x0, 0x1]))
-      setInterval(() => { getInput() }, 1000 / 30)
     })
 
     ws.addEventListener('close', () => {
@@ -35,6 +35,7 @@
     let gamepad = navigator.getGamepads()[document.querySelector('#padIndex').value]
     if (gamepad) {
       try {
+        document.querySelector('#padName').innerText = gamepad.id
         let lx = axisToBytes(gamepad.axes[0])
         let ly = axisToBytes(gamepad.axes[1])
         let nly = axisToBytes(-gamepad.axes[1])
@@ -48,24 +49,47 @@
 
         let data = new Uint8Array([0x1].concat(lx).concat(my).concat(nly).concat(ry).concat(rx).concat(axisToBytes(0)))
         let debugString = Array.from(data).map(e => (e > 0xF ? '' : '0') + e.toString(16).toUpperCase()).join('');
-        ws.send(data)
-        document.querySelector('#info').innerText = `LX: ${gamepad.axes[0].toFixed(2)} LY: ${gamepad.axes[1].toFixed(2)} RX: ${gamepad.axes[2].toFixed(2)} RY: ${gamepad.axes[3].toFixed(2)} TL: ${gamepad.buttons[6].value.toFixed(2)} TR: ${gamepad.buttons[7].value.toFixed(2)}`;
+        if (ws && ws.readyState == 1) {
+          ws.send(data)
+        }
+        document.querySelector('#info').innerText = `LX: ${calcDeadzone(gamepad.axes[0].toFixed(2))} LY: ${calcDeadzone(gamepad.axes[1].toFixed(2))} RX: ${calcDeadzone(gamepad.axes[2].toFixed(2))} RY: ${calcDeadzone(gamepad.axes[3].toFixed(2))} TL: ${gamepad.buttons[6].value.toFixed(2)} TR: ${gamepad.buttons[7].value.toFixed(2)}`;
         document.querySelector('#data').innerText = debugString;
       } catch (e) {
         console.error(e);
       }
+    } else {
+      document.querySelector('#padName').innerText = '[none]'
     }
   }
 
+  setInterval(getInput, 1000/60)
+
   function axisToBytes(input) {
-    let asShort = toShort(input * 0x7FFF)
+    let asShort = toShort(calcDeadzone(input) * 0x7FFF)
     return [asShort & 0xFF, asShort >> 8]
+  }
+
+  function calcDeadzone(input) {
+    if (Math.abs(input) > deadzone) {
+      return input
+    }
+
+    return 0
   }
 
   function toShort(number) {
     const int16 = new Int16Array(1)
     int16[0] = number
     return int16[0]
+  }
+
+  function updateFloat(id, val) {
+    data = new Uint8Array([id].concat(floatBytes(val)));
+    ws.send(data);
+  }
+
+  function floatBytes(val) {
+    return [val & 0xff, val >> 8, val >> 16, val >> 24]
   }
 </script>
 
@@ -76,9 +100,31 @@
   <br><br>
   <label for="padIndex">Use gamepad: </label>
   <input type="number" min="0" step="1" max="3" id="padIndex" value="0">
+  <span id="padName"></span>
+  <br>
+  <label for="padIndex">Deadzone: </label>
+  <input type="number" min="0" step="0.05" max="1" id="padIndex" value="0.1" onchange="deadzone = this.value">
   <br>
   <p id="info"></p>
   <p id="data"></p>
+
+  <h3>Flight Variables</h3>
+  <label for="moveSpeed">Move Speed: </label>
+  <input type="number" id="moveSpeed" value="2" onchange="updateFloat(0x2, this.value)">
+  <br>
+  <label for="rotSpeed">Rotate Speed: </label>
+  <input type="number" id="rotSpeed" value="90" onchange="updateFloat(0x3, this.value)">
+  <br>
+  <label for="moveSmooth">Move Smooth: </label>
+  <input type="number" id="moveSmooth" value="10" onchange="updateFloat(0x4, this.value)">
+  <br>
+  <label for="rotSmooth">Move Speed: </label>
+  <input type="number" id="rotSmooth" value="10" onchange="updateFloat(0x5, this.value)">
+  <br>
+
+  <h3>Teleport</h3>
+
+  <p>// TODO: impl</p>
 
 </body>
 
