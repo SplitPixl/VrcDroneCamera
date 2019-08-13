@@ -1,0 +1,85 @@
+<html>
+
+<head>
+  <title>Drone Control Concept</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    #data {
+      font-family: monospace;
+    }
+  </style>
+</head>
+
+<script>
+  let ws
+
+  function connect() {
+    document.querySelector('#status').innerText = 'Connecting...'
+    ws = new WebSocket(document.querySelector('#url').value)
+
+    ws.addEventListener('open', () => {
+      document.querySelector('#status').innerText = 'Connected!'
+      ws.send(new Uint8Array([0x0, 0x1]))
+      setInterval(() => { getInput() }, 1000 / 30)
+    })
+
+    ws.addEventListener('close', () => {
+      document.querySelector('#status').innerText = 'Connection lost'
+    })
+  }
+
+  function getInput() {
+    let gamepad = navigator.getGamepads()[document.querySelector('#padIndex').value]
+    if (gamepad) {
+      try {
+        let lx = axisToBytes(gamepad.axes[0])
+        let ly = axisToBytes(gamepad.axes[1])
+        let nly = axisToBytes(-gamepad.axes[1])
+        let rx = axisToBytes(gamepad.axes[2])
+        let ry = axisToBytes(gamepad.axes[3])
+        let nry = axisToBytes(-gamepad.axes[3]);
+        let tl = axisToBytes(gamepad.buttons[6].value)
+        let tr = axisToBytes(gamepad.buttons[7].value)
+
+        let my = axisToBytes(gamepad.buttons[7].value - gamepad.buttons[6].value)
+
+        let data = new Uint8Array([0x1].concat(lx).concat(my).concat(nly).concat(ry).concat(rx).concat(axisToBytes(0)))
+        let debugString = Array.from(data).map(e => (e > 0xF ? '' : '0') + e.toString(16).toUpperCase()).join('');
+        ws.send(data)
+        document.querySelector('#info').innerText = `LX: ${gamepad.axes[0].toFixed(2)} LY: ${gamepad.axes[1].toFixed(2)} RX: ${gamepad.axes[2].toFixed(2)} RY: ${gamepad.axes[3].toFixed(2)} TL: ${gamepad.buttons[6].value.toFixed(2)} TR: ${gamepad.buttons[7].value.toFixed(2)}`;
+        document.querySelector('#data').innerText = debugString;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }
+
+  function axisToBytes(input) {
+    let asShort = toShort(input * 0x7FFF)
+    return [asShort & 0xFF, asShort >> 8]
+  }
+
+  function toShort(number) {
+    const int16 = new Int16Array(1)
+    int16[0] = number
+    return int16[0]
+  }
+</script>
+
+<body>
+  <h1 id="status">Not Connected</h1>
+  <input type="url" value="ws://localhost:35000/control" id="url">
+  <button onclick="connect()">Connect</button>
+  <br><br>
+  <label for="padIndex">Use gamepad: </label>
+  <input type="number" min="0" step="1" max="3" id="padIndex" value="0">
+  <br>
+  <p id="info"></p>
+  <p id="data"></p>
+
+</body>
+
+</html>
