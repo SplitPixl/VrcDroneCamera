@@ -117,7 +117,7 @@
 
   function setFlightMode(mode) {
     mode = parseInt(mode);
-    ws.send(new Uint8Array[0, mode]);
+    ws.send(new Uint8Array([0, mode]));
   }
 
   function reset() {
