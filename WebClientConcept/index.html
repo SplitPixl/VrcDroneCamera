@@ -48,7 +48,7 @@
         let my = axisToBytes(gamepad.buttons[7].value - gamepad.buttons[6].value)
 
         let data = new Uint8Array([0x1].concat(lx).concat(my).concat(nly).concat(ry).concat(rx).concat(axisToBytes(0)))
-        let debugString = Array.from(data).map(e => (e > 0xF ? '' : '0') + e.toString(16).toUpperCase()).join('')
+        let debugString = debugByteArray(data)
         if (ws && ws.readyState == 1) {
           ws.send(data)
         }
@@ -62,7 +62,7 @@
     }
   }
 
-  setInterval(getInput, 1000/60)
+  // setInterval(getInput, 1000/60)
 
   function axisToBytes(input) {
     let asShort = toShort(calcDeadzone(input) * 0x7FFF)
@@ -85,7 +85,8 @@
 
   function updateFloat(id, val) {
     let parsedVal = parseFloat(val)
-    let data = new Uint8Array([id].concat(floatBytes(parsedVal)))
+    let data = new Uint8Array([id].concat(Array.from(new Uint8Array(floatBytes(parsedVal)))))
+    console.log(debugByteArray(data));
     ws.send(data)
   }
 
@@ -94,23 +95,29 @@
   }
 
   function teleport() {
-    let px = parseFloat(document.querySelector("tppx").value)
-    let py = parseFloat(document.querySelector("tppy").value)
-    let pz = parseFloat(document.querySelector("tppz").value)
-    let rx = parseFloat(document.querySelector("tprx").value)
-    let ry = parseFloat(document.querySelector("tpry").value)
-    let rz = parseFloat(document.querySelector("tprz").value)
+    let px = parseFloat(document.querySelector("#tppx").value)
+    let py = parseFloat(document.querySelector("#tppy").value)
+    let pz = parseFloat(document.querySelector("#tppz").value)
+    let rx = parseFloat(document.querySelector("#tprx").value)
+    let ry = parseFloat(document.querySelector("#tpry").value)
+    let rz = parseFloat(document.querySelector("#tprz").value)
 
     let data = new Uint8Array([0x6]
-    .concat(floatBytes(px))
-    .concat(floatBytes(py))
-    .concat(floatBytes(pz))
-    .concat(floatBytes(rx))
-    .concat(floatBytes(ry))
-    .concat(floatBytes(rz))
+    .concat(Array.from(new Uint8Array(floatBytes(px))))
+    .concat(Array.from(new Uint8Array(floatBytes(py))))
+    .concat(Array.from(new Uint8Array(floatBytes(pz))))
+    .concat(Array.from(new Uint8Array(floatBytes(rx))))
+    .concat(Array.from(new Uint8Array(floatBytes(ry))))
+    .concat(Array.from(new Uint8Array(floatBytes(rz))))
     )
 
+    console.log(debugByteArray(data))
+
     ws.send(data)
+  }
+
+  function debugByteArray(data) {
+    return Array.from(data).map(e => (e > 0xF ? '' : '0') + e.toString(16).toUpperCase()).join(' ')
   }
 </script>
 
