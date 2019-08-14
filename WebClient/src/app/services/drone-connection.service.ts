@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class VrcConnectionService {
+export class DroneConnectionService {
   private ws: WebSocket;
   public events = new EventTarget();
   private encoder = new TextEncoder();
@@ -40,6 +40,10 @@ export class VrcConnectionService {
     }
   }
 
+  public close() {
+    this.ws.close();
+  }
+
   public sendInput(mx, my, mz, rx, ry, rz) {
     const data = new Uint8Array([DataType.INPUT]
       .concat(this.axisToBytes(mx))
@@ -64,6 +68,35 @@ export class VrcConnectionService {
     return [asShort & 0xFF, asShort >> 8];
   }
 
+  public updateFloat(id, val) {
+    const parsedVal = parseFloat(val);
+    const data = new Uint8Array([id].concat(Array.from(new Uint8Array(this.floatBytes(parsedVal)))));
+    this.send(data);
+  }
+
+  public setFlightMode(mode) {
+    mode = parseInt(mode, 10);
+    this.send(new Uint8Array([DataType.SETMODE, mode]));
+  }
+
+  private floatBytes(val) {
+    return new Float32Array([val]).buffer;
+  }
+
+  public teleport(px, py, pz, rx, ry, rz) {
+
+    const data = new Uint8Array([DataType.TELEPORT]
+      .concat(Array.from(new Uint8Array(this.floatBytes(px))))
+      .concat(Array.from(new Uint8Array(this.floatBytes(py))))
+      .concat(Array.from(new Uint8Array(this.floatBytes(pz))))
+      .concat(Array.from(new Uint8Array(this.floatBytes(rx))))
+      .concat(Array.from(new Uint8Array(this.floatBytes(ry))))
+      .concat(Array.from(new Uint8Array(this.floatBytes(rz))))
+    );
+
+
+    this.send(data);
+  }
 
 }
 

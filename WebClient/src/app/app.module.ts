@@ -10,6 +10,9 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { WebsocketService } from './services/websocket.service';
+import { GamepadActivate } from './misc/GamepadActivate';
+import { ConnectionActivate } from './misc/ConnectionActivate';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,8 +21,10 @@ import { WebsocketService } from './services/websocket.service';
   providers: [
     StatusBar,
     SplashScreen,
+    ConnectionActivate,
+    GamepadActivate,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

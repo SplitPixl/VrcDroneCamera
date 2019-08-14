@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { VrcConnectionService } from './../../services/vrc-connection.service';
+import { DroneConnectionService } from '../../services/drone-connection.service';
 import { WebsocketService } from './../../services/websocket.service';
 import { Router } from '@angular/router';
 
@@ -16,26 +16,26 @@ export class ConnectPage implements OnInit, OnDestroy {
   public newUrlUi = false;
   allowEvents = true;
 
-  constructor(private vrc: VrcConnectionService, private router: Router) { }
+  constructor(private drone: DroneConnectionService, private router: Router) { }
 
 
   ngOnInit() {
     this.allowEvents = true;
-    this.vrc.events.addEventListener('open', () => {
+    this.drone.events.addEventListener('open', () => {
       if (this.allowEvents) {
         this.router.navigate(['/controller']);
       }
     });
-    this.vrc.events.addEventListener('close', () => {
+    this.drone.events.addEventListener('close', () => {
       if (this.allowEvents) {
         // tslint:disable-next-line:max-line-length
-        this.errorMessage = 'Could not connect to drone server. Make sure the mod is installed and the game is running, or change the connection url below.';
+        this.errorMessage = 'Connection lost.';
         this.loading = false;
       }
     });
     // this.loading = true;
     // if (this.router.)
-    // this.vrc.connect(this.defaultUrl);
+    // this.drone.connect(this.defaultUrl);
   }
 
   ngOnDestroy() {
@@ -46,7 +46,7 @@ export class ConnectPage implements OnInit, OnDestroy {
     this.loading = true;
     try {
       const url = form.value.url || this.defaultUrl;
-      this.vrc.connect(url);
+      this.drone.connect(url);
       localStorage.setItem('url', url);
     } catch (err) {
       this.loading = false;

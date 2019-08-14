@@ -2,8 +2,8 @@ import { GamepadInput } from './GamepadInput';
 
 export class GamepadConfig {
   public static PrettyNames = {
-    movePosX: 'Move Left',
-    moveNegX: 'Move Right',
+    movePosX: 'Move Right',
+    moveNegX: 'Move Left',
     movePosY: 'Move Up',
     moveNegY: 'Move Down',
     movePosZ: 'Move Forward',

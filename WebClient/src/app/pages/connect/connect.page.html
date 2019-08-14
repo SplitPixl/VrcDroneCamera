@@ -20,14 +20,14 @@
                   </p>
                 </ion-card-content>
               </ion-card>
-              <ion-item *ngIf="!loading">
+              <ion-item>
                 <ion-label position="floating">URL</ion-label>
                 <ion-input name="url" type="url" [placeholder]="defaultUrl" ngModel>
                 </ion-input>
               </ion-item>
             </div>
             <div padding>
-              <ion-button size="large" type="submit" [disabled]="form.invalid || loading" expand="block">
+              <ion-button type="submit" [disabled]="form.invalid || loading" expand="block">
                 {{!loading ? 'Connect' : ''}}
                 <ion-spinner *ngIf="loading" name="crescent" color="light"></ion-spinner>
               </ion-button>
