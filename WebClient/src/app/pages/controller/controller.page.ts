@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GamepadService } from './../../services/gamepad.service';
 import { Router } from '@angular/router';
+import { VrcConnectionService } from './../../services/vrc-connection.service';
 
 @Component({
   selector: 'app-controller',
@@ -11,9 +12,13 @@ export class ControllerPage implements OnInit {
 
   public controllers: Gamepad[];
 
-  constructor(private gamepadService: GamepadService, private router: Router) { }
+  constructor(private gamepadService: GamepadService, private vrc: VrcConnectionService, private router: Router) { }
 
   ngOnInit() {
+    if (!this.vrc.isConnected()) {
+      this.router.navigate(['/connect']);
+    }
+
     this.controllers = navigator.getGamepads();
 
     window.addEventListener('gamepadconnected', (e) => {

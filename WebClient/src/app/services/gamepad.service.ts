@@ -9,8 +9,13 @@ import { Router } from '@angular/router';
 export class GamepadService {
 
   padIndex = -1;
+  currentConfig: GamepadConfig;
 
   constructor(private router: Router) { }
+
+  public isConnected() {
+    return !!navigator.getGamepads()[this.padIndex];
+  }
 
   public getState() {
     return navigator.getGamepads()[this.getIndex()];
@@ -31,18 +36,23 @@ export class GamepadService {
   public getConfig(): GamepadConfig {
     const id = this.getState().id;
 
-    let configs: GamepadConfig[];
-    try {
-      configs = JSON.parse(localStorage.getItem('gamepadConfigs')) as GamepadConfig[];
-      if (!configs) {
+    if (!this.currentConfig || this.currentConfig.id !== id) {
+      let configs: GamepadConfig[];
+      try {
+        configs = JSON.parse(localStorage.getItem('gamepadConfigs')) as GamepadConfig[];
+        if (!configs) {
+          configs = [];
+        }
+      } catch (err) {
+        console.error(err);
         configs = [];
       }
-    } catch (err) {
-      console.error(err);
-      configs = [];
+
+      this.currentConfig = configs.find(config => config.id === id);
     }
 
-    return configs.find(config => config.id === id);
+    return this.currentConfig;
+
   }
 
   public isConfigured() {
@@ -80,7 +90,25 @@ export class GamepadService {
     return binding;
   }
 
+  public readBindingValue(input: GamepadInput) {
+    if (!input) {
+      return 0;
+    }
+
+    const state = this.getState();
+
+    switch (input.type) {
+      case InputType.Button:
+        return state.buttons[input.index].value;
+      case InputType.AxisPositive:
+        return Math.max(0, state.axes[input.index]);
+      case InputType.AxisNegative:
+        return Math.max(0, -state.axes[input.index]);
+    }
+  }
+
   public saveConfig(binding: GamepadConfig) {
+    this.currentConfig = binding;
     let configs: GamepadConfig[];
     try {
       configs = JSON.parse(localStorage.getItem('gamepadConfigs')) as GamepadConfig[];
