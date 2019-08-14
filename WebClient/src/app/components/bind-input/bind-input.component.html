@@ -1,0 +1,22 @@
+<div padding>
+  <h3>{{bindName(input)}}<br><code>{{input}}</code></h3>
+  <div *ngIf="waitingForBind">
+    <p>Press input now</p>
+    <ion-button expand="block" (click)="clearAndClose()">Don't Bind</ion-button>
+  </div>
+  <div *ngIf="!waitingForBind">
+    <p *ngIf="bindings[input]">
+      Type: {{getTypeName(bindings[input].type)}}
+      <br>
+      Input: {{bindings[input].index}}
+    </p>
+    <p *ngIf="!bindings[input]">
+      No binding set.
+    </p>
+
+    <ion-button expand="block" (click)="bind()">Rebind</ion-button>
+    <ion-button expand="block" (click)="clear()">Clear</ion-button>
+    <ion-button expand="block" (click)="close()">Done</ion-button>
+  </div>
+
+</div>

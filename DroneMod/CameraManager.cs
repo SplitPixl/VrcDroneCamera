@@ -14,6 +14,7 @@ namespace DroneMod
         public float translateSmooth = 10;
         public float rotateSmooth = 10;
         GameObject userCam;
+        Transform camWeirdnessFixer = new GameObject("camWeirdnessFixer").transform;
         UserCameraController camController;
         Transform followTarget;
         public DroneMode mode = DroneMode.DISABLED;
@@ -68,6 +69,12 @@ namespace DroneMod
             {
                 camController.cameraMount.position = Vector3.Lerp(camController.cameraMount.position, transform.position, 1 / translateSmooth);
                 camController.cameraMount.rotation = Quaternion.Lerp(camController.cameraMount.rotation, transform.rotation, 1 / rotateSmooth);
+
+                //camWeirdnessFixer.position = Vector3.Lerp(camWeirdnessFixer.position, transform.position, 1 / translateSmooth);
+                //camWeirdnessFixer.rotation = Quaternion.Lerp(camWeirdnessFixer.rotation, transform.rotation, 1 / rotateSmooth);
+
+                //camController.cameraMount.position = new Vector3(camWeirdnessFixer.position.x, camWeirdnessFixer.position.y, camWeirdnessFixer.position.z);
+                //camController.cameraMount.rotation = new Quaternion(camWeirdnessFixer.rotation.x, camWeirdnessFixer.rotation.y, camWeirdnessFixer.rotation.z, camWeirdnessFixer.rotation.w);
             }
 
         }
@@ -86,7 +93,7 @@ namespace DroneMod
         {
             inputTranslation = translate;
             inputRotation = rotate;
-            Console.Write(string.Format("{0}\r", mode.ToString()));
+            Console.Write(string.Format("{0}     \r", mode.ToString()));
         }
 
         public void SetFollow(Transform target)
@@ -106,10 +113,13 @@ namespace DroneMod
         public void Reset()
         {
             camController.cameraMount.localPosition = new Vector3(0, 0, 0);
-            camController.cameraMount.localEulerAngles = new Vector3(0, 0, 0);
+            camController.cameraMount.localEulerAngles = new Vector3(-90, 0, 0);
 
             transform.position = new Vector3(camController.cameraMount.position.x, camController.cameraMount.position.y, camController.cameraMount.position.z);
             transform.eulerAngles = new Vector3(camController.cameraMount.eulerAngles.x, camController.cameraMount.eulerAngles.y, camController.cameraMount.eulerAngles.z);
+
+            camWeirdnessFixer.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            camWeirdnessFixer.rotation = new Quaternion(transform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
 
             Console.WriteLine("Reset Camera!");
         }

@@ -12,11 +12,16 @@ export class WebsocketService {
   public events = new EventTarget();
 
   public connect(url) {
-    const ws = new WebSocket(url);
-    ws.addEventListener('open', (ev) => { this.events.dispatchEvent(ev); });
-    ws.addEventListener('message', (ev) => { this.events.dispatchEvent(ev); });
-    ws.addEventListener('close', (ev) => { this.events.dispatchEvent(ev); });
-    ws.addEventListener('error', (ev) => { this.events.dispatchEvent(ev); });
+    try {
+      const ws = new WebSocket(url);
+      ws.addEventListener('open', (ev) => { this.events.dispatchEvent(new event.constructor(ev.type, ev)); });
+      ws.addEventListener('message', (ev) => { this.events.dispatchEvent(new event.constructor(ev.type, ev)); });
+      ws.addEventListener('close', (ev) => { this.events.dispatchEvent(new event.constructor(ev.type, ev)); });
+      ws.addEventListener('error', (ev) => { this.events.dispatchEvent(new event.constructor(ev.type, ev)); });
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
   }
 
   public send(data) {

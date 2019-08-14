@@ -18,6 +18,7 @@ export class VrcConnectionService {
     try {
       this.wsService.connect(url);
     } catch (err) {
+      console.error(err);
       throw err;
     }
   }
