@@ -84,7 +84,8 @@
   }
 
   function updateFloat(id, val) {
-    data = new Uint8Array([id].concat(floatBytes(val)));
+    let parsedVal = parseFloat(val)
+    data = new Uint8Array([id].concat(floatBytes(parsedVal)));
     ws.send(data);
   }
 
