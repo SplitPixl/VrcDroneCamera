@@ -90,7 +90,7 @@
   }
 
   function floatBytes(val) {
-    return [val & 0xff, val >> 8, val >> 16, val >> 24]
+    return new Float32Array([val]).buffer
   }
 </script>
 
