@@ -41,21 +41,21 @@
         let nly = axisToBytes(-gamepad.axes[1])
         let rx = axisToBytes(gamepad.axes[2])
         let ry = axisToBytes(gamepad.axes[3])
-        let nry = axisToBytes(-gamepad.axes[3]);
+        let nry = axisToBytes(-gamepad.axes[3])
         let tl = axisToBytes(gamepad.buttons[6].value)
         let tr = axisToBytes(gamepad.buttons[7].value)
 
         let my = axisToBytes(gamepad.buttons[7].value - gamepad.buttons[6].value)
 
         let data = new Uint8Array([0x1].concat(lx).concat(my).concat(nly).concat(ry).concat(rx).concat(axisToBytes(0)))
-        let debugString = Array.from(data).map(e => (e > 0xF ? '' : '0') + e.toString(16).toUpperCase()).join('');
+        let debugString = Array.from(data).map(e => (e > 0xF ? '' : '0') + e.toString(16).toUpperCase()).join('')
         if (ws && ws.readyState == 1) {
           ws.send(data)
         }
-        document.querySelector('#info').innerText = `LX: ${calcDeadzone(gamepad.axes[0].toFixed(2))} LY: ${calcDeadzone(gamepad.axes[1].toFixed(2))} RX: ${calcDeadzone(gamepad.axes[2].toFixed(2))} RY: ${calcDeadzone(gamepad.axes[3].toFixed(2))} TL: ${gamepad.buttons[6].value.toFixed(2)} TR: ${gamepad.buttons[7].value.toFixed(2)}`;
-        document.querySelector('#data').innerText = debugString;
+        document.querySelector('#info').innerText = `LX: ${calcDeadzone(gamepad.axes[0].toFixed(2))} LY: ${calcDeadzone(gamepad.axes[1].toFixed(2))} RX: ${calcDeadzone(gamepad.axes[2].toFixed(2))} RY: ${calcDeadzone(gamepad.axes[3].toFixed(2))} TL: ${gamepad.buttons[6].value.toFixed(2)} TR: ${gamepad.buttons[7].value.toFixed(2)}`
+        document.querySelector('#data').innerText = debugString
       } catch (e) {
-        console.error(e);
+        console.error(e)
       }
     } else {
       document.querySelector('#padName').innerText = '[none]'
@@ -85,12 +85,32 @@
 
   function updateFloat(id, val) {
     let parsedVal = parseFloat(val)
-    data = new Uint8Array([id].concat(floatBytes(parsedVal)));
-    ws.send(data);
+    let data = new Uint8Array([id].concat(floatBytes(parsedVal)))
+    ws.send(data)
   }
 
   function floatBytes(val) {
     return new Float32Array([val]).buffer
+  }
+
+  function teleport() {
+    let px = parseFloat(document.querySelector("tppx").value)
+    let py = parseFloat(document.querySelector("tppy").value)
+    let pz = parseFloat(document.querySelector("tppz").value)
+    let rx = parseFloat(document.querySelector("tprx").value)
+    let ry = parseFloat(document.querySelector("tpry").value)
+    let rz = parseFloat(document.querySelector("tprz").value)
+
+    let data = new Uint8Array([0x6]
+    .concat(floatBytes(px))
+    .concat(floatBytes(py))
+    .concat(floatBytes(pz))
+    .concat(floatBytes(rx))
+    .concat(floatBytes(ry))
+    .concat(floatBytes(rz))
+    )
+
+    ws.send(data)
   }
 </script>
 
@@ -125,7 +145,22 @@
 
   <h3>Teleport</h3>
 
-  <p>// TODO: impl</p>
+  <h5>Position</h5>
+  <label for="tppx">x: </label>
+  <input type="number" id="tppx" value="0">
+  <label for="tppy">y: </label>
+  <input type="number" id="tppy" value="0">
+  <label for="tppz">z: </label>
+  <input type="number" id="tppz" value="0">
+  <h5>Rotation</h5>
+  <label for="tprx">x: </label>
+  <input type="number" id="tprx" value="0">
+  <label for="tpry">y: </label>
+  <input type="number" id="tpry" value="0">
+  <label for="tprz">z: </label>
+  <input type="number" id="tprz" value="0">
+  <br>
+  <button onclick="teleport()">Teleport</button>
 
 </body>
 
