@@ -101,18 +101,7 @@ namespace DroneMod
 
         private void ProcessMode(byte[] rawData)
         {
-            switch (rawData[1])
-            {
-                case 0:
-                    camman.SetMode(CameraManager.DroneMode.DISABLED);
-                    break;
-                case 1:
-                    camman.SetMode(CameraManager.DroneMode.FLY);
-                    break;
-                default:
-                    camman.SetMode(CameraManager.DroneMode.DISABLED);
-                    break;
-            }
+            camman.SetMode((CameraManager.DroneMode)rawData[1]);
         }
 
         private void ProcessInput(byte[] data)

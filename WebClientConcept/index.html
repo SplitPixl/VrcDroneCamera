@@ -23,7 +23,6 @@
 
     ws.addEventListener('open', () => {
       document.querySelector('#status').innerText = 'Connected!'
-      ws.send(new Uint8Array([0x0, 0x1]))
     })
 
     ws.addEventListener('close', () => {
@@ -116,6 +115,15 @@
     ws.send(data)
   }
 
+  function setFlightMode(mode) {
+    mode = parseInt(mode);
+    ws.send(new Uint8Array[0, mode]);
+  }
+
+  function reset() {
+    ws.send(new Uint8Array[7]);
+  }
+
   function debugByteArray(data) {
     return Array.from(data).map(e => (e > 0xF ? '' : '0') + e.toString(16).toUpperCase()).join(' ')
   }
@@ -133,8 +141,15 @@
   <label for="padIndex">Deadzone: </label>
   <input type="number" min="0" step="0.05" max="1" id="padIndex" value="0.1" onchange="deadzone = this.value">
   <br>
-  <p id="info"></p>
-  <p id="data"></p>
+  <p id="info">Press a gamepad button</p>
+  <p id="data">-</p>
+  <br>
+  <label for="flightMode">Flight Mode</label>
+  <select id="flightMode" onchange="setFlightMode(this.value)">
+    <option value="0">Disabled</option>
+    <option value="1">Minecraft Creative</option>
+    <option value="2">Gmod NoClip</option>
+  </select>
 
   <h3>Flight Variables</h3>
   <label for="moveSpeed">Move Speed: </label>
@@ -152,14 +167,14 @@
 
   <h3>Teleport</h3>
 
-  <h5>Position</h5>
+  <div><b>Position</b></div>
   <label for="tppx">x: </label>
   <input type="number" id="tppx" value="0">
   <label for="tppy">y: </label>
   <input type="number" id="tppy" value="0">
   <label for="tppz">z: </label>
   <input type="number" id="tppz" value="0">
-  <h5>Rotation</h5>
+  <div><b>Rotation</b></div>
   <label for="tprx">x: </label>
   <input type="number" id="tprx" value="0">
   <label for="tpry">y: </label>
@@ -168,6 +183,7 @@
   <input type="number" id="tprz" value="0">
   <br>
   <button onclick="teleport()">Teleport</button>
+  <button onclick="reset()">Reset Position</button>
 
 </body>
 

@@ -42,9 +42,15 @@ namespace DroneMod
             {
                 case DroneMode.DISABLED:
                     break;
-                case DroneMode.FLY:
+                case DroneMode.FLYMODEGMOD:
                     transform.Translate(inputTranslation * translateSpeed * Time.deltaTime);
                     transform.eulerAngles += inputRotation * (rotateSpeed * Time.deltaTime);
+                    break;
+                case DroneMode.FLYMODEMINECRAFT:
+                    Vector3 oldAngles = transform.eulerAngles;
+                    transform.eulerAngles = new Vector3(0, oldAngles.y, 0);
+                    transform.Translate(inputTranslation * translateSpeed * Time.deltaTime);
+                    transform.eulerAngles = oldAngles + (inputRotation * (rotateSpeed * Time.deltaTime));
                     break;
                 case DroneMode.FOLLOW:
                     if (followTarget == null)
@@ -99,13 +105,12 @@ namespace DroneMod
 
         public void Reset()
         {
-            Transform viewFinder = camController.viewFinder.transform;
-             
-            transform.position = new Vector3(viewFinder.position.x, viewFinder.position.y, viewFinder.position.z);
-            transform.eulerAngles = new Vector3(viewFinder.eulerAngles.x - 90, viewFinder.eulerAngles.y + 180, viewFinder.eulerAngles.z);
+            camController.cameraMount.localPosition = new Vector3(0, 0, 0);
+            camController.cameraMount.localEulerAngles = new Vector3(0, 0, 0);
 
-            camController.cameraMount.position = new Vector3(viewFinder.position.x, viewFinder.position.y, viewFinder.position.z);
-            camController.cameraMount.eulerAngles = new Vector3(viewFinder.eulerAngles.x + 90, viewFinder.eulerAngles.y, viewFinder.eulerAngles.z);
+            transform.position = new Vector3(camController.cameraMount.position.x, camController.cameraMount.position.y, camController.cameraMount.position.z);
+            transform.eulerAngles = new Vector3(camController.cameraMount.eulerAngles.x, camController.cameraMount.eulerAngles.y, camController.cameraMount.eulerAngles.z);
+
             Console.WriteLine("Reset Camera!");
         }
 
@@ -117,8 +122,9 @@ namespace DroneMod
         public enum DroneMode
         {
             DISABLED = 0,
-            FLY = 1,
-            FOLLOW = 2,
+            FLYMODEMINECRAFT = 1,
+            FLYMODEGMOD = 2,
+            FOLLOW = 3
         }
     }
 }
