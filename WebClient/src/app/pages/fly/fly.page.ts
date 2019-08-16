@@ -95,4 +95,8 @@ export class FlyPage implements OnInit {
     this.drone.updateFloat(id, val);
   }
 
+  public setFov(val) {
+    this.drone.setFov(val);
+  }
+
 }

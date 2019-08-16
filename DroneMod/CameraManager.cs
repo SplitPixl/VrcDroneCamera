@@ -14,7 +14,6 @@ namespace DroneMod
         public float translateSmooth = 10;
         public float rotateSmooth = 10;
         GameObject userCam;
-        Transform camWeirdnessFixer = new GameObject("camWeirdnessFixer").transform;
         UserCameraController camController;
         Transform followTarget;
         public DroneMode mode = DroneMode.DISABLED;
@@ -26,15 +25,15 @@ namespace DroneMod
 
         private IEnumerator GetCam()
         {
-            yield return new WaitForSeconds(2);
             Console.WriteLine("GetCam()");
-            Console.WriteLine("Trying to find cam...");
-
-            userCam = GameObject.Find("TrackingVolume/UserCamera");
-            camController = userCam.GetComponent<UserCameraController>();
-
+            while (!userCam)
+            {
+                Console.WriteLine("Trying to find cam...");
+                userCam = GameObject.Find("TrackingVolume/UserCamera");
+                camController = userCam.GetComponent<UserCameraController>();
+                yield return new WaitForSeconds(0.5f);
+            }
             Console.WriteLine("Camera found!");
-
         }
 
         public void Update()
@@ -67,14 +66,10 @@ namespace DroneMod
 
             if (mode != DroneMode.DISABLED)
             {
-                camController.cameraMount.position = Vector3.Lerp(camController.cameraMount.position, transform.position, 1 / translateSmooth);
-                camController.cameraMount.rotation = Quaternion.Lerp(camController.cameraMount.rotation, transform.rotation, 1 / rotateSmooth);
-
-                //camWeirdnessFixer.position = Vector3.Lerp(camWeirdnessFixer.position, transform.position, 1 / translateSmooth);
-                //camWeirdnessFixer.rotation = Quaternion.Lerp(camWeirdnessFixer.rotation, transform.rotation, 1 / rotateSmooth);
-
-                //camController.cameraMount.position = new Vector3(camWeirdnessFixer.position.x, camWeirdnessFixer.position.y, camWeirdnessFixer.position.z);
-                //camController.cameraMount.rotation = new Quaternion(camWeirdnessFixer.rotation.x, camWeirdnessFixer.rotation.y, camWeirdnessFixer.rotation.z, camWeirdnessFixer.rotation.w);
+                camController.photoCamera.transform.position = Vector3.Lerp(camController.photoCamera.transform.position, transform.position, 1 / translateSmooth);
+                camController.photoCamera.transform.rotation = Quaternion.Lerp(camController.photoCamera.transform.rotation, transform.rotation, 1 / rotateSmooth);
+                camController.videoCamera.transform.position = Vector3.Lerp(camController.videoCamera.transform.position, transform.position, 1 / translateSmooth);
+                camController.videoCamera.transform.rotation = Quaternion.Lerp(camController.videoCamera.transform.rotation, transform.rotation, 1 / rotateSmooth);
             }
 
         }
@@ -85,6 +80,11 @@ namespace DroneMod
             if (mode == DroneMode.DISABLED)
             {
                 Reset();
+            }
+            else
+            {
+                transform.position = camController.viewFinder.transform.position;
+
             }
         }
 
@@ -112,14 +112,13 @@ namespace DroneMod
 
         public void Reset()
         {
-            camController.cameraMount.localPosition = new Vector3(0, 0, 0);
-            camController.cameraMount.localEulerAngles = new Vector3(-90, 0, 0);
+            camController.photoCamera.transform.localPosition = new Vector3(0, 1, 0);
+            camController.photoCamera.transform.localEulerAngles = new Vector3(90, 0, 0);
+            camController.videoCamera.transform.localPosition = new Vector3(0, 1, 0);
+            camController.videoCamera.transform.localEulerAngles = new Vector3(90, 0, 0);
 
             transform.position = new Vector3(camController.cameraMount.position.x, camController.cameraMount.position.y, camController.cameraMount.position.z);
             transform.eulerAngles = new Vector3(camController.cameraMount.eulerAngles.x, camController.cameraMount.eulerAngles.y, camController.cameraMount.eulerAngles.z);
-
-            camWeirdnessFixer.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-            camWeirdnessFixer.rotation = new Quaternion(transform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
 
             Console.WriteLine("Reset Camera!");
         }

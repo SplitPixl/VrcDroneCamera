@@ -20,6 +20,7 @@ namespace DroneMod
         protected override void OnOpen()
         {
             Console.WriteLine("[Drn] Camera Client Connected!");
+            camman.Reset();
         }
 
         protected override void OnClose(CloseEventArgs e)

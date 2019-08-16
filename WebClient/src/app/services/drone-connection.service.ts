@@ -68,9 +68,13 @@ export class DroneConnectionService {
     return [asShort & 0xFF, asShort >> 8];
   }
 
+  private asByteArray(val) {
+    return Array.from(new Uint8Array(val));
+  }
+
   public updateFloat(id, val) {
     const parsedVal = parseFloat(val);
-    const data = new Uint8Array([id].concat(Array.from(new Uint8Array(this.floatBytes(parsedVal)))));
+    const data = new Uint8Array([id].concat(this.asByteArray(this.floatBytes(parsedVal))));
     this.send(data);
   }
 
@@ -86,14 +90,22 @@ export class DroneConnectionService {
   public teleport(px, py, pz, rx, ry, rz) {
 
     const data = new Uint8Array([DataType.TELEPORT]
-      .concat(Array.from(new Uint8Array(this.floatBytes(px))))
-      .concat(Array.from(new Uint8Array(this.floatBytes(py))))
-      .concat(Array.from(new Uint8Array(this.floatBytes(pz))))
-      .concat(Array.from(new Uint8Array(this.floatBytes(rx))))
-      .concat(Array.from(new Uint8Array(this.floatBytes(ry))))
-      .concat(Array.from(new Uint8Array(this.floatBytes(rz))))
+      .concat(this.asByteArray(this.floatBytes(px)))
+      .concat(this.asByteArray(this.floatBytes(py)))
+      .concat(this.asByteArray(this.floatBytes(pz)))
+      .concat(this.asByteArray(this.floatBytes(rx)))
+      .concat(this.asByteArray(this.floatBytes(ry)))
+      .concat(this.asByteArray(this.floatBytes(rz)))
     );
 
+
+    this.send(data);
+  }
+
+  public setFov(val) {
+    const data = new Uint8Array([DataType.CAMERASETTING, CameraSetting.FOV]
+      .concat(this.asByteArray(this.floatBytes(val)))
+    );
 
     this.send(data);
   }
@@ -109,7 +121,9 @@ export enum DataType {
   SETROTSMOOTH = 5,
   TELEPORT = 6,
   RESET = 7,
-  SETFOLLOWGO = 8,
-  SETFOLLOWPLAYER = 9,
-  SHUTTER = 10
+  CAMERASETTING = 8
+}
+
+export enum CameraSetting {
+  FOV = 0
 }

@@ -109,6 +109,21 @@
           </ion-card-content>
         </ion-card>
       </ion-col>
+
+      <ion-col size-md="4" size-lg="4" size-xs="12">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Camera</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <ion-item>
+              <ion-label position="floating">Zoom</ion-label>
+              <ion-range min="180" max="1" value="60" (ionChange)="setFov(this.value)"></ion-range>
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
