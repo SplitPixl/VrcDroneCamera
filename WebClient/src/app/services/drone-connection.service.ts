@@ -111,7 +111,7 @@ export class DroneConnectionService {
   }
 
   public setProjection(val) {
-    const data = new Uint8Array([DataType.CAMERASETTING, CameraSetting.PERSPECTIVE, val]);
+    const data = new Uint8Array([DataType.CAMERASETTING, CameraSetting.PROJECTION, parseInt(val, 10)]);
 
     this.send(data);
   }
@@ -132,5 +132,5 @@ export enum DataType {
 
 export enum CameraSetting {
   FOV = 0,
-  PERSPECTIVE = 1
+  PROJECTION = 1
 }

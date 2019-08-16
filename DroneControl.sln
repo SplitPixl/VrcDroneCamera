@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29020.237
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroneMod", "DroneMod\DroneMod.csproj", "{A5F1EF80-E565-4A5E-AA61-A4D3CE275E55}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VrcDroneMod", "DroneMod\VrcDroneMod.csproj", "{A5F1EF80-E565-4A5E-AA61-A4D3CE275E55}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlClient", "ControlClient\ControlClient.csproj", "{DA3FE655-F429-41A4-A861-64E3645E9600}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeatSaberDroneMod", "BeatSaberDroneMod\BeatSaberDroneMod.csproj", "{81C33D12-F2A6-49D0-9C39-0F4CC3864124}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{DA3FE655-F429-41A4-A861-64E3645E9600}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA3FE655-F429-41A4-A861-64E3645E9600}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA3FE655-F429-41A4-A861-64E3645E9600}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81C33D12-F2A6-49D0-9C39-0F4CC3864124}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81C33D12-F2A6-49D0-9C39-0F4CC3864124}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81C33D12-F2A6-49D0-9C39-0F4CC3864124}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81C33D12-F2A6-49D0-9C39-0F4CC3864124}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

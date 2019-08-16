@@ -11,6 +11,7 @@ import { Controls } from 'src/app/types/Controls';
   styleUrls: ['./fly.page.scss'],
 })
 export class FlyPage implements OnInit {
+  public controllerUnavailable = true;
   public running = false;
   public flightInfo = 'N/A';
 
@@ -21,6 +22,9 @@ export class FlyPage implements OnInit {
   }
 
   public start() {
+    window.addEventListener('gamepadconnected', (e) => {
+      this.controllerUnavailable = false;
+    });
     if (!this.running) {
       this.running = true;
       // this.drone.setFlightMode(2);
