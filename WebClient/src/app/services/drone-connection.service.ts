@@ -110,7 +110,7 @@ export class DroneConnectionService {
     this.send(data);
   }
 
-  public setPerspective(val) {
+  public setProjection(val) {
     const data = new Uint8Array([DataType.CAMERASETTING, CameraSetting.PERSPECTIVE, val]);
 
     this.send(data);
