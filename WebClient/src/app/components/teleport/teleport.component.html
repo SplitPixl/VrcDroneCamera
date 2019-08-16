@@ -4,25 +4,25 @@
   </ion-card-header>
 
   <ion-card-content>
-    <form #form="ngForm" (ngSubmit)="teleport(form)">
+    <form #tpForm="ngForm" (ngSubmit)="teleport(tpForm)">
       <ion-grid>
         <ion-row>
           <ion-col>
             <ion-item>
               <ion-label position="floating">Position X:</ion-label>
-              <ion-input type="number" value="0" name="px"></ion-input>
+              <ion-input type="number" value="0" name="px" [(ngModel)]="px"></ion-input>
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
               <ion-label position="floating">Position Y:</ion-label>
-              <ion-input type="number" value="0" name="py"></ion-input>
+              <ion-input type="number" value="0" name="py" [(ngModel)]="py"></ion-input>
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
               <ion-label position="floating">Position Z:</ion-label>
-              <ion-input type="number" value="0" name="pz"></ion-input>
+              <ion-input type="number" value="0" name="pz" [(ngModel)]="pz"></ion-input>
             </ion-item>
           </ion-col>
         </ion-row>
@@ -30,19 +30,19 @@
           <ion-col>
             <ion-item>
               <ion-label position="floating">Rotation X:</ion-label>
-              <ion-input type="number" value="0" name="rx"></ion-input>
+              <ion-input type="number" value="0" name="rx" [(ngModel)]="rx"></ion-input>
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
               <ion-label position="floating">Rotation Y:</ion-label>
-              <ion-input type="number" value="0" name="ry"></ion-input>
+              <ion-input type="number" value="0" name="ry" [(ngModel)]="ry"></ion-input>
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
               <ion-label position="floating">Rotation Z:</ion-label>
-              <ion-input type="number" value="0" name="rz"></ion-input>
+              <ion-input type="number" value="0" name="rz" [(ngModel)]="rz"></ion-input>
             </ion-item>
           </ion-col>
         </ion-row>

@@ -9,6 +9,8 @@ import { DroneConnectionService } from './../../services/drone-connection.servic
 })
 export class CameraVarsComponent implements OnInit {
 
+  fov = 60;
+
   @ViewChild('fovSlider', { static: false }) fovSlider: IonRange;
   @ViewChild('projection', { static: false }) projection: IonRange;
 
@@ -17,7 +19,6 @@ export class CameraVarsComponent implements OnInit {
   ngOnInit() {}
 
   public setFov(val) {
-    console.log(this.fovSlider.value);
-    this.drone.setFov(this.fovSlider.value);
+    this.drone.setFov(val);
   }
 }

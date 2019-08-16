@@ -7,6 +7,12 @@ import { DroneConnectionService } from './../../services/drone-connection.servic
   styleUrls: ['./teleport.component.scss'],
 })
 export class TeleportComponent implements OnInit {
+  px = 0;
+  py = 0;
+  pz = 0;
+  rx = 0;
+  ry = 0;
+  rz = 0;
 
   constructor(private drone: DroneConnectionService) { }
 
@@ -19,11 +25,6 @@ export class TeleportComponent implements OnInit {
     const rx = parseFloat(form.value.rx);
     const ry = parseFloat(form.value.ry);
     const rz = parseFloat(form.value.rz);
-    console.log(form.value.px, form.value.py, form.value.pz);
-    console.log(form.value.rx, form.value.ry, form.value.rz);
-    console.log(px, py, pz);
-    console.log(rx, ry, rz);
-    console.log(form);
     this.drone.teleport(
       px, py, pz,
       rx, ry, rz
