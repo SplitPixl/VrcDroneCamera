@@ -72,6 +72,7 @@ export class DroneConnectionService {
   }
 
   public updateFloat(id, val) {
+    console.log(id, val);
     const parsedVal = parseFloat(val);
     const data = new Uint8Array([id].concat(this.asByteArray(this.floatBytes(parsedVal))));
     this.send(data);
@@ -109,6 +110,12 @@ export class DroneConnectionService {
     this.send(data);
   }
 
+  public setPerspective(val) {
+    const data = new Uint8Array([DataType.CAMERASETTING, CameraSetting.PERSPECTIVE, val]);
+
+    this.send(data);
+  }
+
 }
 
 export enum DataType {
@@ -124,5 +131,6 @@ export enum DataType {
 }
 
 export enum CameraSetting {
-  FOV = 0
+  FOV = 0,
+  PERSPECTIVE = 1
 }

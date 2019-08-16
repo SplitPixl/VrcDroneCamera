@@ -9,7 +9,7 @@ import { Controls } from '../types/Controls';
 })
 export class GamepadService {
 
-  padIndex = -1;
+  public padIndex = -1;
   currentConfig: GamepadConfig;
 
   constructor(private router: Router) { }

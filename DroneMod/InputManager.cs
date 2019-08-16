@@ -143,6 +143,9 @@ namespace DroneMod
                     float value = BitConverter.ToSingle(data, 2);
                     camman.SetFOV(value);
                     break;
+                case CameraSetting.PERSPECTIVE:
+                    camman.setOrthographic(data[3] == 1);
+                    break;
             }
         }
 
@@ -161,7 +164,8 @@ namespace DroneMod
 
         enum CameraSetting
         {
-            FOV = 0
+            FOV = 0,
+            PERSPECTIVE = 1,
         }
 
     }

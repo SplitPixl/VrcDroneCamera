@@ -8,19 +8,23 @@
   <ion-grid>
     <ion-row color="primary" justify-content-center>
       <ion-col align-self-center size-md="4" size-lg="4" size-xs="12">
-        <div text-center>
-          <h3>Choose Your Controller</h3>
-        </div>
-        <div padding>
-          <ion-list>
-            <ion-item (click)="noController()">
-              <ion-label>No Controller</ion-label>
-            </ion-item>
-            <ion-item *ngFor="let controller of controllers" (click)="selectController(controller)">
-              <ion-label>{{controller ? controller.id : '[not connected]'}}</ion-label>
-            </ion-item>
-          </ion-list>
-        </div>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Pick a Controller</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <ion-list>
+              <ion-item (click)="noController()">
+                <ion-label>No Controller</ion-label>
+              </ion-item>
+              <ion-item *ngFor="let controller of controllers" (click)="selectController(controller)">
+                <ion-label>{{controller ? controller.id : '[not connected]'}}</ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+          </div>
+        </ion-card>
         <div text-center>
           <ion-text color="medium">
             If your controller is connected but it's not showing up, try pressing a button on it.

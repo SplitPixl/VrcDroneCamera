@@ -156,9 +156,24 @@ namespace DroneMod
 
         public void SetFOV(float value)
         {
-            Console.WriteLine(string.Format("Set FOV to: {0}", value));
-            camController.photoCamera.GetComponent<Camera>().fieldOfView = value;
-            camController.videoCamera.GetComponent<Camera>().fieldOfView = value;
+            foreach (Camera cam in userCam.GetComponentsInChildren<Camera>())
+            {
+                if (cam.orthographic)
+                {
+                    cam.orthographicSize = value;
+                } else
+                {
+                    cam.fieldOfView = value;
+                }
+            }
+        }
+
+        public void setOrthographic(bool orthograph)
+        {
+            foreach (Camera cam in userCam.GetComponentsInChildren<Camera>())
+            {
+                cam.orthographic = orthograph;
+            }
         }
 
         public enum DroneMode

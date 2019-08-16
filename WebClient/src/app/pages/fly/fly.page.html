@@ -19,7 +19,7 @@
           <ion-card-content>
             <ion-button (click)="reset()" expand="block">Reset Position</ion-button>
             <ion-button (click)="pickController()" expand="block">Pick Controller</ion-button>
-            <ion-button (click)="configureController()" expand="block">Config Controller</ion-button>
+            <ion-button (click)="configureController()" expand="block" disabled="gamepad.padIndex === -1">Config Controller</ion-button>
             <ion-button (click)="disconnect()" expand="block">Disconnect</ion-button>
           </ion-card-content>
         </ion-card>
