@@ -34,4 +34,6 @@ export class GamepadConfig {
   public rotateNegZ: GamepadInput;
 
   public reset: GamepadInput;
+
+  public deadzone = 0.01;
 }

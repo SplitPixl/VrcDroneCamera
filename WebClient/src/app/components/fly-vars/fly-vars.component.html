@@ -1,0 +1,32 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Flight Config</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-item>
+      <ion-label>Flight Mode</ion-label>
+      <ion-select #flightMode (change)="setFlightMode()">
+        <ion-select-option value="0" selected>Disabled</ion-select-option>
+        <ion-select-option value="1">Minecraft Creative</ion-select-option>
+        <ion-select-option value="2">Gmod Noclip</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label #moveSpeed position="floating">Movement Speed</ion-label>
+      <ion-input type="number" value="2" (change)="updateFloat(2, this.value)"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Rotation Speed</ion-label>
+      <ion-input type="number" value="90" (change)="updateFloat(3, this.value)"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Movement Smoothing</ion-label>
+      <ion-input type="number" value="10" (change)="updateFloat(4, this.value)"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Rotation Smoothing</ion-label>
+      <ion-input type="number" value="10" (change)="updateFloat(5, this.value)"></ion-input>
+    </ion-item>
+  </ion-card-content>
+</ion-card>

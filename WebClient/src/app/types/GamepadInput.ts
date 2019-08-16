@@ -7,5 +7,4 @@ export enum InputType {
 export class GamepadInput {
   public type: InputType;
   public index: number;
-  public deadzone = 0;
 }

@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CameraManager.cs" />
+    <Compile Include="Debug.cs" />
     <Compile Include="DroneMod.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

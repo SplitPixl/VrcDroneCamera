@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { GamepadConfig } from './../types/GamepadConfig';
 import { GamepadInput, InputType } from '../types/GamepadInput';
 import { Router } from '@angular/router';
+import { Controls } from '../types/Controls';
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +60,7 @@ export class GamepadService {
     return this.getConfig() !== undefined;
   }
 
-  public async readOneInput() {
+  public async scanInput() {
     let binding: GamepadInput;
 
     while (!binding) {
@@ -90,21 +91,39 @@ export class GamepadService {
     return binding;
   }
 
-  public readBindingValue(input: GamepadInput) {
-    if (!input) {
+  public getValue(input: Controls) {
+    if (!input || this.padIndex == -1) {
       return 0;
     }
 
     const state = this.getState();
+    const config = this.getConfig();
 
-    switch (input.type) {
-      case InputType.Button:
-        return state.buttons[input.index].value;
-      case InputType.AxisPositive:
-        return Math.max(0, state.axes[input.index]);
-      case InputType.AxisNegative:
-        return Math.max(0, -state.axes[input.index]);
+    const requested = config[input];
+
+    if (!requested) {
+      return 0;
     }
+
+    let val = 0;
+
+    switch (requested.type) {
+      case InputType.Button:
+        val = state.buttons[requested.index].value;
+        break;
+      case InputType.AxisPositive:
+        val = Math.max(0, state.axes[requested.index]);
+        break;
+      case InputType.AxisNegative:
+        val =  Math.max(0, -state.axes[requested.index]);
+        break;
+    }
+
+    if (val > config.deadzone) {
+      return val;
+    }
+
+    return 0;
   }
 
   public saveConfig(binding: GamepadConfig) {

@@ -9,120 +9,24 @@
     <ion-row justify-content-center>
 
       <ion-col size-md="4" size-lg="4" size-xs="12">
+        <app-fly-vars></app-fly-vars>
+        <app-status [flightInfo]="flightInfo"></app-status>
+      </ion-col>
+
+      <ion-col size-md="4" size-lg="4" size-xs="12">
+        <app-teleport></app-teleport>
         <ion-card>
-          <ion-card-header>
-            <ion-card-title>Status</ion-card-title>
-          </ion-card-header>
-
           <ion-card-content>
-            <p>
-              <code>
-                {{flightInfo}}
-              </code>
-            </p>
-
-            <ion-button (click)="start()" expand="block" *ngIf="!running">Start</ion-button>
-
-            <ion-item>
-              <ion-label>Flight Mode</ion-label>
-              <ion-select (change)="drone.setFlightMode(this.value)">
-                <ion-select-option value="0">Disabled</ion-select-option>
-                <ion-select-option value="1">Minecraft Creative</ion-select-option>
-                <ion-select-option value="2" selected>Gmod Noclip</ion-select-option>
-              </ion-select>
-            </ion-item>
-            <ion-item>
-              <ion-label position="floating">Movement Speed</ion-label>
-              <ion-input type="number" value="2" (change)="updateFloat(2, this.value)"></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label position="floating">Rotation Speed</ion-label>
-              <ion-input type="number" value="90" (change)="updateFloat(3, this.value)"></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label position="floating">Movement Smoothing</ion-label>
-              <ion-input type="number" value="10" (change)="updateFloat(4, this.value)"></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label position="floating">Rotation Smoothing</ion-label>
-              <ion-input type="number" value="10" (change)="updateFloat(5, this.value)"></ion-input>
-            </ion-item>
+            <ion-button (click)="reset()" expand="block">Reset Position</ion-button>
+            <ion-button (click)="pickController()" expand="block">Pick Controller</ion-button>
+            <ion-button (click)="configureController()" expand="block">Config Controller</ion-button>
+            <ion-button (click)="disconnect()" expand="block">Disconnect</ion-button>
           </ion-card-content>
         </ion-card>
       </ion-col>
 
       <ion-col size-md="4" size-lg="4" size-xs="12">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Teleport</ion-card-title>
-          </ion-card-header>
-
-          <ion-card-content>
-            <form #form="ngForm" (ngSubmit)="teleport(form)">
-              <ion-grid>
-                <ion-row>
-                  <ion-col>
-                    <ion-item>
-                      <ion-label position="floating">Position X:</ion-label>
-                      <ion-input type="number" value="0" name="px"></ion-input>
-                    </ion-item>
-                  </ion-col>
-                  <ion-col>
-                    <ion-item>
-                      <ion-label position="floating">Position Y:</ion-label>
-                      <ion-input type="number" value="0" name="py"></ion-input>
-                    </ion-item>
-                  </ion-col>
-                  <ion-col>
-                    <ion-item>
-                      <ion-label position="floating">Position Z:</ion-label>
-                      <ion-input type="number" value="0" name="pz"></ion-input>
-                    </ion-item>
-                  </ion-col>
-                </ion-row>
-                <ion-row>
-                  <ion-col>
-                    <ion-item>
-                      <ion-label position="floating">Rotation X:</ion-label>
-                      <ion-input type="number" value="0" name="rx"></ion-input>
-                    </ion-item>
-                  </ion-col>
-                  <ion-col>
-                    <ion-item>
-                      <ion-label position="floating">Rotation Y:</ion-label>
-                      <ion-input type="number" value="0" name="ry"></ion-input>
-                    </ion-item>
-                  </ion-col>
-                  <ion-col>
-                    <ion-item>
-                      <ion-label position="floating">Rotation Z:</ion-label>
-                      <ion-input type="number" value="0" name="rz"></ion-input>
-                    </ion-item>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-              <ion-button type="submit" expand="block">Teleport</ion-button>
-              <ion-button (click)="reset()" expand="block">Reset Position</ion-button>
-              <ion-button (click)="configureController()" expand="block">Config Controller</ion-button>
-              <ion-button (click)="disconnect()" expand="block">Disconnect</ion-button>
-            </form>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-
-      <ion-col size-md="4" size-lg="4" size-xs="12">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-title>Camera</ion-card-title>
-          </ion-card-header>
-
-          <ion-card-content>
-            <ion-item>
-              <ion-label position="floating">Zoom</ion-label>
-              <ion-range min="180" max="1" value="60" (ionChange)="setFov(this.value)"></ion-range>
-            </ion-item>
-          </ion-card-content>
-        </ion-card>
+        <app-camera-vars></app-camera-vars>
       </ion-col>
     </ion-row>
   </ion-grid>

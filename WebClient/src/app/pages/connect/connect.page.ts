@@ -23,7 +23,7 @@ export class ConnectPage implements OnInit, OnDestroy {
     this.allowEvents = true;
     this.drone.events.addEventListener('open', () => {
       if (this.allowEvents) {
-        this.router.navigate(['/controller']);
+        this.router.navigate(['/fly']);
       }
     });
     this.drone.events.addEventListener('close', () => {

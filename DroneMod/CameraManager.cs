@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DebuggerMod.Serial;
+using System;
 using System.Collections;
 using UnityEngine;
 using WebSocketSharp.Server;
@@ -25,15 +26,23 @@ namespace DroneMod
 
         private IEnumerator GetCam()
         {
-            Console.WriteLine("GetCam()");
-            while (!userCam)
+            while (userCam == null && camController == null)
             {
+                yield return new WaitForSeconds(0.5f);
                 Console.WriteLine("Trying to find cam...");
                 userCam = GameObject.Find("TrackingVolume/UserCamera");
-                camController = userCam.GetComponent<UserCameraController>();
-                yield return new WaitForSeconds(0.5f);
+                if (userCam != null)
+                {
+                    camController = userCam.GetComponent<UserCameraController>();
+                }
             }
             Console.WriteLine("Camera found!");
+        }
+
+        public void OnConnect()
+        {
+            transform.position = camController.viewFinder.transform.position;
+            transform.eulerAngles = new Vector3(camController.viewFinder.transform.eulerAngles.x, camController.viewFinder.transform.eulerAngles.y + 180, camController.viewFinder.transform.eulerAngles.z);
         }
 
         public void Update()
@@ -66,26 +75,44 @@ namespace DroneMod
 
             if (mode != DroneMode.DISABLED)
             {
-                camController.photoCamera.transform.position = Vector3.Lerp(camController.photoCamera.transform.position, transform.position, 1 / translateSmooth);
-                camController.photoCamera.transform.rotation = Quaternion.Lerp(camController.photoCamera.transform.rotation, transform.rotation, 1 / rotateSmooth);
-                camController.videoCamera.transform.position = Vector3.Lerp(camController.videoCamera.transform.position, transform.position, 1 / translateSmooth);
-                camController.videoCamera.transform.rotation = Quaternion.Lerp(camController.videoCamera.transform.rotation, transform.rotation, 1 / rotateSmooth);
+                camController.cameraMount.position = Vector3.Lerp(camController.cameraMount.position, transform.position, 1 / translateSmooth);
+                camController.cameraMount.rotation = Quaternion.Lerp(camController.cameraMount.rotation, transform.rotation, 1 / rotateSmooth);
+                //camController.photoCamera.transform.position = Vector3.Lerp(camController.photoCamera.transform.position, transform.position, 1 / translateSmooth);
+                //camController.photoCamera.transform.rotation = Quaternion.Lerp(camController.photoCamera.transform.rotation, transform.rotation, 1 / rotateSmooth);
+                //camController.videoCamera.transform.position = Vector3.Lerp(camController.videoCamera.transform.position, transform.position, 1 / translateSmooth);
+                //camController.videoCamera.transform.rotation = Quaternion.Lerp(camController.videoCamera.transform.rotation, transform.rotation, 1 / rotateSmooth);
+            }
+
+            if (Input.GetKey(KeyCode.O))
+            {
+                try
+                {
+                    Console.WriteLine(new GameObjectSerial(camController.userCameraIndicator.gameObject).ToString());
+                } catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            }
+
+            if (Input.GetKey(KeyCode.I))
+            {
+                camController.userCameraIndicator.enabled = !camController.userCameraIndicator.enabled;
             }
 
         }
 
         public void SetMode(DroneMode newMode)
         {
-            mode = newMode;
-            if (mode == DroneMode.DISABLED)
+            if (newMode == DroneMode.DISABLED)
             {
                 Reset();
             }
-            else
+            else if(mode == DroneMode.DISABLED)
             {
                 transform.position = camController.viewFinder.transform.position;
-
+                transform.eulerAngles = new Vector3(camController.viewFinder.transform.eulerAngles.x, camController.viewFinder.transform.eulerAngles.y + 180, camController.viewFinder.transform.eulerAngles.z);
             }
+            mode = newMode;
         }
 
 
@@ -93,7 +120,6 @@ namespace DroneMod
         {
             inputTranslation = translate;
             inputRotation = rotate;
-            Console.Write(string.Format("{0}     \r", mode.ToString()));
         }
 
         public void SetFollow(Transform target)
@@ -108,24 +134,31 @@ namespace DroneMod
             transform.position = translate;
             transform.eulerAngles = rotate;
             Console.WriteLine("Teleported Camera!");
+            Console.WriteLine(string.Format("{0} {1}", translate, rotate));
         }
 
         public void Reset()
         {
-            camController.photoCamera.transform.localPosition = new Vector3(0, 1, 0);
-            camController.photoCamera.transform.localEulerAngles = new Vector3(90, 0, 0);
-            camController.videoCamera.transform.localPosition = new Vector3(0, 1, 0);
-            camController.videoCamera.transform.localEulerAngles = new Vector3(90, 0, 0);
+            //camController.photoCamera.transform.localPosition = new Vector3(0, 1, 0);
+            //camController.photoCamera.transform.localEulerAngles = new Vector3(90, 0, 0);
+            //camController.videoCamera.transform.localPosition = new Vector3(0, 1, 0);
+            //camController.videoCamera.transform.localEulerAngles = new Vector3(90, 0, 0);
 
-            transform.position = new Vector3(camController.cameraMount.position.x, camController.cameraMount.position.y, camController.cameraMount.position.z);
-            transform.eulerAngles = new Vector3(camController.cameraMount.eulerAngles.x, camController.cameraMount.eulerAngles.y, camController.cameraMount.eulerAngles.z);
+            camController.cameraMount.localPosition = new Vector3(0, 0, 0);
+            camController.cameraMount.localEulerAngles = new Vector3(90, 0, 180);
 
+            transform.position = new Vector3(camController.viewFinder.transform.position.x, camController.viewFinder.transform.position.y, camController.viewFinder.transform.position.z);
+            transform.eulerAngles = new Vector3(camController.viewFinder.transform.eulerAngles.x, camController.viewFinder.transform.eulerAngles.y + 180, camController.viewFinder.transform.eulerAngles.z);
+
+            SetFOV(60);
             Console.WriteLine("Reset Camera!");
         }
 
-        public void Shutter()
+        public void SetFOV(float value)
         {
-            camController.onUseDown(0);
+            Console.WriteLine(string.Format("Set FOV to: {0}", value));
+            camController.photoCamera.GetComponent<Camera>().fieldOfView = value;
+            camController.videoCamera.GetComponent<Camera>().fieldOfView = value;
         }
 
         public enum DroneMode

@@ -8,7 +8,7 @@ const routes: Routes = [
   { path: 'connect', loadChildren: './pages/connect/connect.module#ConnectPageModule' },
   { path: 'controller', loadChildren: './pages/controller/controller.module#ControllerPageModule', canActivate: [ConnectionActivate] },
   { path: 'controller-config', loadChildren: './pages/controller-config/controller-config.module#ControllerConfigPageModule', canActivate: [ConnectionActivate, GamepadActivate] },
-  { path: 'fly', loadChildren: './pages/fly/fly.module#FlyPageModule', canActivate: [ConnectionActivate, GamepadActivate] },
+  { path: 'fly', loadChildren: './pages/fly/fly.module#FlyPageModule', canActivate: [ConnectionActivate] },
 ];
 
 @NgModule({

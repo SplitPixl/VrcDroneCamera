@@ -7,6 +7,11 @@ import { IonicModule } from '@ionic/angular';
 
 import { FlyPage } from './fly.page';
 
+import { StatusComponent } from './../../components/status/status.component';
+import { FlyVarsComponent } from './../../components/fly-vars/fly-vars.component';
+import { TeleportComponent } from 'src/app/components/teleport/teleport.component';
+import { CameraVarsComponent } from 'src/app/components/camera-vars/camera-vars.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -21,6 +26,12 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [FlyPage]
+  declarations: [
+    FlyPage,
+    StatusComponent,
+    FlyVarsComponent,
+    TeleportComponent,
+    CameraVarsComponent
+  ]
 })
 export class FlyPageModule {}

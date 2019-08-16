@@ -42,31 +42,28 @@ namespace DroneMod
                 //    Console.Write(string.Format("{0,2:X}", b));
                 //}
                 //Console.WriteLine("\r");
-                switch (e.RawData[0])
+                switch ((DataType)e.RawData[0])
                 {
-                    case (byte)DataType.SETMODE:
+                    case DataType.SETMODE:
                         ProcessMode(e.RawData);
                         break;
-                    case (byte)DataType.INPUT:
+                    case DataType.INPUT:
                         ProcessInput(e.RawData);
                         break;
-                    case (byte)DataType.SETMOVESPEED:
-                    case (byte)DataType.SETROTSPEED:
-                    case (byte)DataType.SETMOVESMOOTH:
-                    case (byte)DataType.SETROTSMOOTH:
+                    case DataType.SETMOVESPEED:
+                    case DataType.SETROTSPEED:
+                    case DataType.SETMOVESMOOTH:
+                    case DataType.SETROTSMOOTH:
                         ProcessFloatUpdate(e.RawData);
                         break;
-                    case (byte)DataType.TELEPORT:
+                    case DataType.TELEPORT:
                         ProcessTeleportPos(e.RawData);
                         break;
-                    case (byte)DataType.RESET:
+                    case DataType.RESET:
                         ProcessReset();
                         break;
-                    case (byte)DataType.SETFOLLOWGO:
-                        ProcessFollowGO(e.RawData);
-                        break;
-                    case (byte)DataType.SETFOLLOWPLAYER:
-                        ProcessFollowPlayer(e.RawData);
+                    case DataType.CAMERASETTING:
+                        ProcessCameraSetting(e.RawData);
                         break;
                     default:
                         Console.Write("Invalid OP Code: 0x{0:X}", e.RawData[0]);
@@ -83,18 +80,18 @@ namespace DroneMod
         {
             float f = BitConverter.ToSingle(data, 1);
 
-            switch (data[0])
+            switch ((DataType)data[0])
             {
-                case (byte)DataType.SETMOVESPEED:
+                case DataType.SETMOVESPEED:
                     camman.translateSpeed = f;
                     break;
-                case (byte)DataType.SETROTSPEED:
+                case DataType.SETROTSPEED:
                     camman.rotateSpeed = f;
                     break;
-                case (byte)DataType.SETMOVESMOOTH:
+                case DataType.SETMOVESMOOTH:
                     camman.translateSmooth = f;
                     break;
-                case (byte)DataType.SETROTSMOOTH:
+                case DataType.SETROTSMOOTH:
                     camman.rotateSmooth = f;
                     break;
             }
@@ -138,14 +135,15 @@ namespace DroneMod
             camman.Reset();
         }
 
-        private void ProcessFollowPlayer(byte[] rawData)
+        private void ProcessCameraSetting(byte[] data)
         {
-            throw new NotImplementedException();
-        }
-
-        private void ProcessFollowGO(byte[] rawData)
-        {
-            throw new NotImplementedException();
+            switch ((CameraSetting)data[1])
+            {
+                case CameraSetting.FOV:
+                    float value = BitConverter.ToSingle(data, 2);
+                    camman.SetFOV(value);
+                    break;
+            }
         }
 
         enum DataType
@@ -158,9 +156,12 @@ namespace DroneMod
             SETROTSMOOTH = 5,
             TELEPORT = 6,
             RESET = 7,
-            SETFOLLOWGO = 8,
-            SETFOLLOWPLAYER = 9,
-            SHUTTER = 10
+            CAMERASETTING = 8
+        }
+
+        enum CameraSetting
+        {
+            FOV = 0
         }
 
     }

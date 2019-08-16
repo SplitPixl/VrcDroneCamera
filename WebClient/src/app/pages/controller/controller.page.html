@@ -13,6 +13,9 @@
         </div>
         <div padding>
           <ion-list>
+            <ion-item (click)="noController()">
+              <ion-label>No Controller</ion-label>
+            </ion-item>
             <ion-item *ngFor="let controller of controllers" (click)="selectController(controller)">
               <ion-label>{{controller ? controller.id : '[not connected]'}}</ion-label>
             </ion-item>

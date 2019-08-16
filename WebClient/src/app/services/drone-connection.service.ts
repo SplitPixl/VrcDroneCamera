@@ -11,7 +11,6 @@ export class DroneConnectionService {
   private encoder = new TextEncoder();
   public messages: Subject<Uint8Array>;
 
-
   public connect(url) {
     try {
       this.ws = new WebSocket(url);

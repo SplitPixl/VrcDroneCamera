@@ -19,15 +19,19 @@ export class ControllerPage implements OnInit {
       this.router.navigate(['/connect']);
     }
 
-    this.controllers = navigator.getGamepads();
+    this.controllers = Array.from(navigator.getGamepads()).filter(c => c);
 
     window.addEventListener('gamepadconnected', (e) => {
-      this.controllers = navigator.getGamepads();
+      this.controllers = Array.from(navigator.getGamepads()).filter(c => c);
     });
 
     window.addEventListener('gamepaddisconnected', (e) => {
-      this.controllers = navigator.getGamepads();
+      this.controllers = Array.from(navigator.getGamepads()).filter(c => c);
     });
+  }
+
+  public noController() {
+    this.router.navigate(['/fly']);
   }
 
   public selectController(controller: Gamepad) {

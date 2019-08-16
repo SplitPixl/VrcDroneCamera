@@ -33,7 +33,7 @@ export class BindInputComponent implements OnInit {
 
   public async bind() {
     this.waitingForBind = true;
-    const theInput = await this.gamepadService.readOneInput();
+    const theInput = await this.gamepadService.scanInput();
     if (this.waitingForBind) {
       this.bindings[this.input] = theInput;
     }
