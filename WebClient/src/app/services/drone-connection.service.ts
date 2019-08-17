@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { WebsocketService } from './websocket.service';
 import { Subject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,12 @@ export class DroneConnectionService {
   public events = new EventTarget();
   private encoder = new TextEncoder();
   public messages: Subject<Uint8Array>;
+
+  constructor(private router: Router) {
+    this.events.addEventListener('close', () => {
+      router.navigate(['/connect']);
+    });
+  }
 
   public connect(url) {
     try {

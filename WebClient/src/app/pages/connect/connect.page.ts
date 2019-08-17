@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DroneConnectionService } from '../../services/drone-connection.service';
-import { WebsocketService } from './../../services/websocket.service';
 import { Router } from '@angular/router';
 
 @Component({

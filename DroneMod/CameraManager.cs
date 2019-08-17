@@ -107,7 +107,7 @@ namespace DroneMod
             {
                 Reset();
             }
-            else if(mode == DroneMode.DISABLED)
+            else if (mode == DroneMode.DISABLED)
             {
                 transform.position = camController.viewFinder.transform.position;
                 transform.eulerAngles = new Vector3(camController.viewFinder.transform.eulerAngles.x, camController.viewFinder.transform.eulerAngles.y + 180, camController.viewFinder.transform.eulerAngles.z);

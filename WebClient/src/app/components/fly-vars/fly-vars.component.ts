@@ -21,6 +21,7 @@ export class FlyVarsComponent implements OnInit {
   ngOnInit() {}
 
   public setFlightMode() {
+    console.log(this.flightMode.value);
     this.drone.setFlightMode(this.flightMode.value);
   }
 

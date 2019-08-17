@@ -11,7 +11,7 @@
     </ion-card>
     <ion-item>
       <ion-label>Flight Mode</ion-label>
-      <ion-select #flightMode (change)="setFlightMode()" [disabled]="controllerUnavailable">
+      <ion-select #flightMode (ionChange)="setFlightMode()" [disabled]="controllerUnavailable">
         <ion-select-option value="0" selected>Disabled</ion-select-option>
         <ion-select-option value="1">Minecraft Creative</ion-select-option>
         <ion-select-option value="2">Gmod Noclip</ion-select-option>

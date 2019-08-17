@@ -9,7 +9,6 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-import { WebsocketService } from './services/websocket.service';
 import { GamepadActivate } from './misc/GamepadActivate';
 import { ConnectionActivate } from './misc/ConnectionActivate';
 
