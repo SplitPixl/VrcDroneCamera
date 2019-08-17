@@ -9,21 +9,38 @@
     <ion-row justify-content-center>
 
       <ion-col size-md="4" size-lg="4" size-xs="12">
-        <app-fly-vars></app-fly-vars>
-        <app-status [flightInfo]="flightInfo"></app-status>
+        <app-fly-vars [controllerUnavailable]="controllerUnavailable"></app-fly-vars>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Debug</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <p>
+              <code>
+              {{flightInfo}}
+            </code>
+            </p>
+            <p>
+              <code>
+                unavail = {{controllerUnavailable}}
+                run = {{running}}
+              </code>
+            </p>
+          </ion-card-content>
+        </ion-card>
       </ion-col>
 
       <ion-col size-md="4" size-lg="4" size-xs="12">
         <app-teleport></app-teleport>
         <ion-card>
           <ion-card-content>
-            <code>
-              {{controllerUnavailable}}
-            </code>
             <ion-button (click)="reset()" expand="block">Reset Position</ion-button>
             <ion-button (click)="pickController()" expand="block">Pick Controller</ion-button>
-            <ion-button (click)="configureController()" expand="block" [disabled]="controllerUnavailable">Config Controller</ion-button>
-            <ion-button (click)="start()" expand="block" *ngIf="!controllerUnavailable && !running">Start Flying</ion-button>
+            <ion-button (click)="configureController()" expand="block" [disabled]="controllerUnavailable">Config
+              Controller</ion-button>
+            <ion-button (click)="start()" expand="block" *ngIf="!controllerUnavailable && !running">Start Flying
+            </ion-button>
             <ion-button (click)="disconnect()" expand="block">Disconnect</ion-button>
           </ion-card-content>
         </ion-card>

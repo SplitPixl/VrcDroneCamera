@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { DroneConnectionService } from './../../services/drone-connection.service';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
@@ -13,6 +13,7 @@ export class FlyVarsComponent implements OnInit {
   public moveSmooth = 10;
   public rotSmooth = 10;
 
+  @Input() controllerUnavailable;
   @ViewChild('flightMode', { static: false }) flightMode;
 
   constructor(private drone: DroneConnectionService) { }

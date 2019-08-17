@@ -19,7 +19,7 @@ export class CameraVarsComponent implements OnInit {
 
   ngOnInit() {}
 
-  public setPerspective() {
+  public setProjection() {
     this.drone.setProjection(this.projection.value);
   }
 

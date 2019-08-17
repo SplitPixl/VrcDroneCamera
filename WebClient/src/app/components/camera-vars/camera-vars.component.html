@@ -6,7 +6,7 @@
   <ion-card-content>
     <ion-item>
       <ion-label>Projection</ion-label>
-      <ion-select #projection (change)="setProjection()">
+      <ion-select #projection (ionChange)="setProjection()">
         <ion-select-option value="0" selected>Perspective</ion-select-option>
         <ion-select-option value="1">Orthographic</ion-select-option>
       </ion-select>

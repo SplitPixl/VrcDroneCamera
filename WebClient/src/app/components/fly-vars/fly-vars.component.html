@@ -4,9 +4,14 @@
   </ion-card-header>
 
   <ion-card-content>
+    <ion-card *ngIf="controllerUnavailable" color="danger">
+      <ion-card-content>
+        No Controller Connected!
+      </ion-card-content>
+    </ion-card>
     <ion-item>
       <ion-label>Flight Mode</ion-label>
-      <ion-select #flightMode (change)="setFlightMode()">
+      <ion-select #flightMode (change)="setFlightMode()" [disabled]="controllerUnavailable">
         <ion-select-option value="0" selected>Disabled</ion-select-option>
         <ion-select-option value="1">Minecraft Creative</ion-select-option>
         <ion-select-option value="2">Gmod Noclip</ion-select-option>
@@ -14,19 +19,19 @@
     </ion-item>
     <ion-item>
       <ion-label position="floating">Movement Speed</ion-label>
-      <ion-input [(ngModel)]="moveSpeed" type="number" (change)="updateFloat(2, moveSpeed)"></ion-input>
+      <ion-input [(ngModel)]="moveSpeed" type="number" [disabled]="controllerUnavailable" (change)="updateFloat(2, moveSpeed)"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Rotation Speed</ion-label>
-      <ion-input [(ngModel)]="rotSpeed" type="number" (change)="updateFloat(3, this.value)"></ion-input>
+      <ion-input [(ngModel)]="rotSpeed" type="number" [disabled]="controllerUnavailable" (change)="updateFloat(3, this.value)"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Movement Smoothing</ion-label>
-      <ion-input [(ngModel)]="moveSmooth" type="number" (change)="updateFloat(4, this.value)"></ion-input>
+      <ion-input [(ngModel)]="moveSmooth" type="number" [disabled]="controllerUnavailable" (change)="updateFloat(4, this.value)"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Rotation Smoothing</ion-label>
-      <ion-input [(ngModel)]="rotSmooth" type="number" (change)="updateFloat(5, this.value)"></ion-input>
+      <ion-input [(ngModel)]="rotSmooth" type="number" [disabled]="controllerUnavailable" (change)="updateFloat(5, this.value)"></ion-input>
     </ion-item>
   </ion-card-content>
 </ion-card>

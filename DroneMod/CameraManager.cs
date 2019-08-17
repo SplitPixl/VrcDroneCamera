@@ -133,6 +133,11 @@ namespace DroneMod
         {
             transform.position = translate;
             transform.eulerAngles = rotate;
+            if (mode == DroneMode.DISABLED)
+            {
+                camController.cameraMount.position = translate;
+                camController.cameraMount.eulerAngles = rotate;
+            }
             Console.WriteLine("Teleported Camera!");
             Console.WriteLine(string.Format("{0} {1}", translate, rotate));
         }
@@ -150,6 +155,7 @@ namespace DroneMod
             transform.position = new Vector3(camController.viewFinder.transform.position.x, camController.viewFinder.transform.position.y, camController.viewFinder.transform.position.z);
             transform.eulerAngles = new Vector3(camController.viewFinder.transform.eulerAngles.x, camController.viewFinder.transform.eulerAngles.y + 180, camController.viewFinder.transform.eulerAngles.z);
 
+            setOrthographic(false);
             SetFOV(60);
             Console.WriteLine("Reset Camera!");
         }

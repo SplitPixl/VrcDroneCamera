@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DroneConnectionService, DataType } from '../../services/drone-connection.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { GamepadService } from './../../services/gamepad.service';
 import { IonRange, IonSelect } from '@ionic/angular';
 import { Controls } from 'src/app/types/Controls';
@@ -12,22 +12,29 @@ import { Controls } from 'src/app/types/Controls';
 })
 export class FlyPage implements OnInit {
   public controllerUnavailable = true;
+  public gamepadConnected = false;
   public running = false;
   public flightInfo = 'N/A';
 
   constructor(private router: Router, public drone: DroneConnectionService, public gamepad: GamepadService) { }
 
   ngOnInit() {
+    this.router.events.subscribe((evt) => {
+      if (evt instanceof NavigationEnd) {
+        if (evt.url === '/fly') {
+          if (this.gamepad.isConnected()) {
+            this.controllerUnavailable = false;
+            this.start();
+          }
+        }
+      }
+    });
     this.start();
   }
 
   public start() {
-    window.addEventListener('gamepadconnected', (e) => {
-      this.controllerUnavailable = false;
-    });
-    if (!this.running) {
+    if (this.gamepad.isConnected()) {
       this.running = true;
-      // this.drone.setFlightMode(2);
       this.doUpdate();
     }
   }
