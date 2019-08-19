@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class ConnectPage implements OnInit, OnDestroy {
 
-  public defaultUrl = localStorage.getItem('url') || 'ws://localhost:35000/control';
+  public defaultUrl = localStorage.getItem('url') || `ws://${location.host}/control`;
   public errorMessage: string;
   public loading = false;
   public newUrlUi = false;
@@ -21,11 +21,13 @@ export class ConnectPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.allowEvents = true;
     this.drone.events.addEventListener('open', () => {
+      this.loading = false;
       if (this.allowEvents) {
         this.router.navigate(['/fly']);
       }
     });
     this.drone.events.addEventListener('close', () => {
+      this.loading = false;
       if (this.allowEvents) {
         // tslint:disable-next-line:max-line-length
         this.errorMessage = 'Connection lost.';

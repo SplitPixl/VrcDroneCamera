@@ -10,17 +10,27 @@ namespace DroneMod
     public class DroneMod : VRCMod
     {
         private bool initialising = true;
-        Server server = new Server();
+        Server server;
         // All the following methods are optional
         // They also works like Unity's magic methods
-        void OnApplicationStart() { }
+        void OnApplicationStart() {
+            VRCTools.ModPrefs.RegisterPrefBool("DroneCam", "enabled", true, "Enabled");
+            VRCTools.ModPrefs.RegisterPrefInt("DroneCam", "port", 35000, "Webserver Port");
+            VRCTools.ModPrefs.RegisterPrefBool("DroneCam", "openatstart", true, "Open on Start");
+            VRCTools.ModPrefs.RegisterPrefBool("DroneCam", "nocontroller", false, "Disable Gamepad Input");
+            VRCTools.ModPrefs.RegisterPrefBool("DroneCam", "verboselogging", false, "Verbose Logging");
+            server = new Server();
+        }
         void OnApplicationQuit() { }
         void OnLevelWasLoaded(int level)
         {
             if (level == 0 && initialising)
             {
                 initialising = false;
-                server.Start();
+                if(VRCTools.ModPrefs.GetBool("DroneCam", "enabled"))
+                {
+                    server.Start();
+                }
             }
         }
         void OnLevelWasInitialized(int level) { }

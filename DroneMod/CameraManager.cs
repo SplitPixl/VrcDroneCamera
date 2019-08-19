@@ -83,22 +83,6 @@ namespace DroneMod
                 //camController.videoCamera.transform.rotation = Quaternion.Lerp(camController.videoCamera.transform.rotation, transform.rotation, 1 / rotateSmooth);
             }
 
-            if (Input.GetKey(KeyCode.O))
-            {
-                try
-                {
-                    Console.WriteLine(new GameObjectSerial(camController.userCameraIndicator.gameObject).ToString());
-                } catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
-            }
-
-            if (Input.GetKey(KeyCode.I))
-            {
-                camController.userCameraIndicator.enabled = !camController.userCameraIndicator.enabled;
-            }
-
         }
 
         public void SetMode(DroneMode newMode)
@@ -107,10 +91,10 @@ namespace DroneMod
             {
                 Reset();
             }
-            else if (mode == DroneMode.DISABLED)
+            else if (mode == DroneMode.DISABLED && newMode != DroneMode.DISABLED)
             {
                 transform.position = camController.viewFinder.transform.position;
-                transform.eulerAngles = new Vector3(camController.viewFinder.transform.eulerAngles.x, camController.viewFinder.transform.eulerAngles.y + 180, camController.viewFinder.transform.eulerAngles.z);
+                transform.eulerAngles = new Vector3(0, camController.viewFinder.transform.eulerAngles.y, 0);
             }
             mode = newMode;
         }
