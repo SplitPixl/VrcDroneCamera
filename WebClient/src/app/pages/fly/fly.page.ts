@@ -4,6 +4,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { GamepadService } from './../../services/gamepad.service';
 import { IonRange, IonSelect } from '@ionic/angular';
 import { Controls } from 'src/app/types/Controls';
+import { CameraVarsComponent } from 'src/app/components/camera-vars/camera-vars.component';
 
 @Component({
   selector: 'app-fly',
@@ -15,6 +16,8 @@ export class FlyPage implements OnInit {
   public gamepadConnected = false;
   public running = false;
   public flightInfo = 'N/A';
+
+  @ViewChild('camVars', { static: false }) camVars: CameraVarsComponent;
 
   constructor(private router: Router, public drone: DroneConnectionService, public gamepad: GamepadService) { }
 
@@ -40,6 +43,11 @@ export class FlyPage implements OnInit {
   }
 
   doUpdate() {
+
+    if (this.running) {
+      setTimeout(() => this.doUpdate(), 1000 / 60);
+    }
+
     const mnx = this.gamepad.getValue(Controls.moveNegX);
     const mny = this.gamepad.getValue(Controls.moveNegY);
     const mnz = this.gamepad.getValue(Controls.moveNegZ);
@@ -54,6 +62,9 @@ export class FlyPage implements OnInit {
     const rpy = this.gamepad.getValue(Controls.rotatePosY);
     const rpz = this.gamepad.getValue(Controls.rotatePosZ);
 
+    const fn = this.gamepad.getValue(Controls.fovNeg);
+    const fp = this.gamepad.getValue(Controls.fovPos);
+
     const mx = mpx - mnx;
     const my = mpy - mny;
     const mz = mpz - mnz;
@@ -62,12 +73,13 @@ export class FlyPage implements OnInit {
     const ry = rpy - rny;
     const rz = rpz - rnz;
 
+    const fovChange = fp - fn;
+
     // tslint:disable-next-line:max-line-length
     this.flightInfo = `MX: ${mx.toFixed(2)} MY: ${my.toFixed(2)} MZ: ${mz.toFixed(2)} RX: ${rx.toFixed(2)} RY: ${ry.toFixed(2)} RZ: ${rz.toFixed(2)}`;
-    this.drone.sendInput(mx, my, mz, rx, ry, rz);
-
-    if (this.running) {
-      setTimeout(() => this.doUpdate(), 1000 / 60);
+    if (location.pathname === '/fly') {
+      this.drone.sendInput(mx, my, mz, rx, ry, rz);
+      this.camVars.changeFov(fovChange * this.gamepad.getConfig().fovSpeed * (60 / 1000));
     }
 
     return;

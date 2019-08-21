@@ -24,6 +24,18 @@ export class CameraVarsComponent implements OnInit {
   }
 
   public setFov(val) {
+    this.fov = val;
     this.drone.setFov(val);
+  }
+
+  public changeFov(val) {
+    if (this.fov <= 1 && val < 0) {
+      return;
+    } else if (this.fov >= 179 && val > 0) {
+      return;
+    } else {
+      this.fov += val;
+      this.drone.setFov(this.fov);
+    }
   }
 }

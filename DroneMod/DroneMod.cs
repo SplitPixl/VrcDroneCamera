@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 using VRCModLoader;
 
 namespace DroneMod
@@ -27,9 +28,15 @@ namespace DroneMod
             if (level == 0 && initialising)
             {
                 initialising = false;
-                if(VRCTools.ModPrefs.GetBool("DroneCam", "enabled"))
+                if (VRCTools.ModPrefs.GetBool("DroneCam", "enabled"))
                 {
                     server.Start();
+                }
+
+                if (VRCTools.ModPrefs.GetBool("DroneCam", "nocontroller"))
+                {
+                    GameObject app = GameObject.Find("/_Application");
+                    app.GetComponent<VRCInputProcessorController>().enabled = false;
                 }
             }
         }

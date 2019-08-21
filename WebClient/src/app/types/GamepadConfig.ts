@@ -14,7 +14,10 @@ export class GamepadConfig {
     rotatePosY: 'Look Right',
     rotateNegY: 'Look Left',
     rotatePosZ: 'Rotate Counterclockwise',
-    rotateNegZ: 'Rotate Clockwise'
+    rotateNegZ: 'Rotate Clockwise',
+
+    fovPos: 'Increase FOV (Zoom Out)',
+    fovNeg: 'Decrease FOV (Zoom In)',
   }
 
   public id: string;
@@ -33,7 +36,11 @@ export class GamepadConfig {
   public rotatePosZ: GamepadInput;
   public rotateNegZ: GamepadInput;
 
+  public fovPos: GamepadInput;
+  public fovNeg: GamepadInput;
+
   public reset: GamepadInput;
 
-  public deadzone = 0.01;
+  public deadzone = 0.05;
+  public fovSpeed = 1;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { BindInputComponent } from './../../components/bind-input/bind-input.component';
 import { GamepadConfig } from 'src/app/types/GamepadConfig';
@@ -13,6 +13,9 @@ import { Router } from '@angular/router';
 export class ControllerConfigPage implements OnInit {
   config: GamepadConfig;
   controller;
+
+  @ViewChild('fovSpeed', { static: false }) fovSpeed;
+  @ViewChild('deadzone', { static: false }) deadzone;
 
   constructor(public popoverController: PopoverController, private gamepadService: GamepadService, private router: Router) { }
 
@@ -47,6 +50,14 @@ export class ControllerConfigPage implements OnInit {
       translucent: true
     });
     return await popover.present();
+  }
+
+  public setFovSpeed() {
+    this.config.fovSpeed = parseFloat(this.fovSpeed.value);
+  }
+
+  public setDeadzone() {
+    this.config.deadzone = parseFloat(this.deadzone.value);
   }
 
   public save() {

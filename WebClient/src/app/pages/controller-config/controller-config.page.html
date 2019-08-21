@@ -7,12 +7,12 @@
 <ion-content>
   <ion-grid>
     <ion-row justify-content-center>
-      <ion-col align-self-center size-md="4" size-lg="4" size-xs="12">
-        <div text-center>
-          <h4>Movement</h4>
-        </div>
-        <div padding>
-          <ion-list>
+      <ion-col size-md="4" size-lg="4" size-xs="12">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Movement</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
             <ion-item (click)="bindInput('movePosZ')">
               <ion-label>{{bindName('movePosZ')}}</ion-label>
               <ion-icon name="checkmark" slot="end" *ngIf="config['movePosZ']"></ion-icon>
@@ -21,13 +21,13 @@
               <ion-label>{{bindName('moveNegZ')}}</ion-label>
               <ion-icon name="checkmark" slot="end" *ngIf="config['moveNegZ']"></ion-icon>
             </ion-item>
-            <ion-item (click)="bindInput('movePosX')">
-              <ion-label>{{bindName('movePosX')}}</ion-label>
-              <ion-icon name="checkmark" slot="end" *ngIf="config['movePosX']"></ion-icon>
-            </ion-item>
             <ion-item (click)="bindInput('moveNegX')">
               <ion-label>{{bindName('moveNegX')}}</ion-label>
               <ion-icon name="checkmark" slot="end" *ngIf="config['moveNegX']"></ion-icon>
+            </ion-item>
+            <ion-item (click)="bindInput('movePosX')">
+              <ion-label>{{bindName('movePosX')}}</ion-label>
+              <ion-icon name="checkmark" slot="end" *ngIf="config['movePosX']"></ion-icon>
             </ion-item>
             <ion-item (click)="bindInput('movePosY')">
               <ion-label>{{bindName('movePosY')}}</ion-label>
@@ -37,15 +37,15 @@
               <ion-label>{{bindName('moveNegY')}}</ion-label>
               <ion-icon name="checkmark" slot="end" *ngIf="config['moveNegY']"></ion-icon>
             </ion-item>
-          </ion-list>
-        </div>
+          </ion-card-content>
+        </ion-card>
       </ion-col>
-      <ion-col align-self-center size-md="4" size-lg="4" size-xs="12">
-        <div text-center>
-          <h4>Rotation</h4>
-        </div>
-        <div padding>
-          <ion-list>
+      <ion-col size-md="4" size-lg="4" size-xs="12">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Rotation</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
             <ion-item (click)="bindInput('rotateNegX')">
               <ion-label>{{bindName('rotateNegX')}}</ion-label>
               <ion-icon name="checkmark" slot="end" *ngIf="config['rotateNegX']"></ion-icon>
@@ -70,8 +70,33 @@
               <ion-label>{{bindName('rotatePosZ')}}</ion-label>
               <ion-icon name="checkmark" slot="end" *ngIf="config['rotatePosZ']"></ion-icon>
             </ion-item>
-          </ion-list>
-        </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col size-md="4" size-lg="4" size-xs="12">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Misc</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-item (click)="bindInput('fovPos')">
+              <ion-label>{{bindName('fovPos')}}</ion-label>
+              <ion-icon name="checkmark" slot="end" *ngIf="config['fovPos']"></ion-icon>
+            </ion-item>
+            <ion-item (click)="bindInput('fovNeg')">
+              <ion-label>{{bindName('fovNeg')}}</ion-label>
+              <ion-icon name="checkmark" slot="end" *ngIf="config['fovNeg']"></ion-icon>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">FOV Change Speed</ion-label>
+              <ion-input #fovSpeed type="number" min="0" value="1" (ionChange)="setFovSpeed()"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Deadzone</ion-label>
+              <ion-input #deadzone type="number" min="0" value="0.02" max="1" (ionChange)="setDeadzone()"></ion-input>
+            </ion-item>
+          </ion-card-content>
+        </ion-card>
       </ion-col>
     </ion-row>
     <ion-row justify-content-center>

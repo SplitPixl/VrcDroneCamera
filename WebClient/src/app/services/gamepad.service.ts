@@ -85,14 +85,14 @@ export class GamepadService {
         binding = input;
       }
 
-      await new Promise(resolve => setTimeout(resolve, 50));
+      await new Promise(resolve => setTimeout(resolve, 1000 / 60));
     }
 
     return binding;
   }
 
   public getValue(input: Controls) {
-    if (!input || this.padIndex == -1) {
+    if (!input || this.padIndex === -1) {
       return 0;
     }
 

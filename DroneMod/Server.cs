@@ -72,7 +72,7 @@ namespace DroneMod
             Console.WriteLine(string.Format("[DroneCam] Server running on http://{0}:{1}/", server.Address, server.Port));
             if (ModPrefs.GetBool("DroneCam", "openatstart"))
             {
-                System.Diagnostics.Process.Start(string.Format("http://{0}:{1}/", server.Address, server.Port));
+                System.Diagnostics.Process.Start(string.Format("http://localhost:{1}/", server.Address, server.Port));
             }
         }
     }

@@ -11,5 +11,8 @@ export enum Controls {
   rotatePosY = 'rotatePosY',
   rotateNegY = 'rotateNegY',
   rotatePosZ = 'rotatePosZ',
-  rotateNegZ = 'rotateNegZ'
+  rotateNegZ = 'rotateNegZ',
+
+  fovPos = 'fovPos',
+  fovNeg = 'fovNeg'
 }
